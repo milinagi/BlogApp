@@ -9,7 +9,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.jorgerc.blogapp.presentation.screens.login.components.LoginBottomBar
@@ -21,10 +20,12 @@ import com.jorgerc.blogapp.presentation.ui.theme.BlogAppTheme
 @Composable
 fun LoginScreen(navController: NavHostController) {
 
+    val viewModel = LoginViewModel()
+
     Scaffold(
         topBar = { },
         content = {
-                  LoginContent()
+                  LoginContent(viewModel)
         },
         bottomBar = {
             LoginBottomBar(navController)

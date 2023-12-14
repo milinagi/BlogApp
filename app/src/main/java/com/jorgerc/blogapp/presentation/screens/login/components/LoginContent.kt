@@ -33,18 +33,19 @@ import androidx.compose.ui.unit.sp
 import com.jorgerc.blogapp.R
 import com.jorgerc.blogapp.presentation.components.DefaultButton
 import com.jorgerc.blogapp.presentation.components.DefaultTextField
+import com.jorgerc.blogapp.presentation.screens.login.LoginViewModel
 import com.jorgerc.blogapp.presentation.ui.theme.BlogAppTheme
 import com.jorgerc.blogapp.presentation.ui.theme.Red500
 
 @Composable
-fun LoginContent() {
+fun LoginContent(viewModel: LoginViewModel) {
     Box(
         modifier = Modifier
             .padding()
             .fillMaxWidth(),
     ) {
         BoxHeader()
-        CardForm()
+        CardForm(viewModel)
     }
 }
 
@@ -78,14 +79,14 @@ fun BoxHeader() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CardForm() {
+fun CardForm(viewModel: LoginViewModel) {
 
-    var email by remember {
-        mutableStateOf("")
-    }
-    var password by remember {
-        mutableStateOf("")
-    }
+//    var email by remember {
+//        mutableStateOf("")
+//    }
+//    var password by remember {
+//        mutableStateOf("")
+//    }
 
     Card(
         modifier = Modifier
@@ -113,21 +114,21 @@ fun CardForm() {
             )
             Text(
                 text = "Por favor inicia sesión para continuar",
-                color = Color.Gray, // Cambia el color aquí
+                color = Color.Gray,
                 fontSize = 16.sp
             )
             DefaultTextField(
                 modifier = Modifier.padding(top = 25.dp),
-                value = email,
-                onValueChange = { email = it},
+                value = viewModel.email.value,
+                onValueChange = { viewModel.email.value = it},
                 label = "Email",
                 icon = Icons.Default.Email,
                 keyboardType = KeyboardType.Email
             )
             DefaultTextField(
                 modifier = Modifier.padding(top = 8.dp),
-                value = password,
-                onValueChange = { password = it},
+                value = viewModel.password.value,
+                onValueChange = { viewModel.password.value = it},
                 label = "Contraseña",
                 icon = Icons.Default.Lock,
                 hideText = true
@@ -139,20 +140,6 @@ fun CardForm() {
                 text = "INICIAR SESION",
                 onClick = { }
             )
-        }
-    }
-}
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun LoginContentPreview() {
-    BlogAppTheme(darkTheme = true) {
-        // A surface container using the 'background' color from the theme
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            LoginContent()
         }
     }
 }
