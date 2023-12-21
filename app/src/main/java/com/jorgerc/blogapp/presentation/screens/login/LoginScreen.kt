@@ -20,12 +20,11 @@ import com.jorgerc.blogapp.presentation.ui.theme.BlogAppTheme
 @Composable
 fun LoginScreen(navController: NavHostController) {
 
-    val viewModel = LoginViewModel()
 
     Scaffold(
         topBar = { },
         content = {
-                  LoginContent(viewModel)
+                  LoginContent()
         },
         bottomBar = {
             LoginBottomBar(navController)
