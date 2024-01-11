@@ -67,7 +67,7 @@ fun SignupContent(viewModel: SignupViewModel = hiltViewModel()) {
                 Text(
                     modifier = Modifier
                         .padding(
-                            top = 40.dp,
+                            top = 10.dp,
                             bottom = 0.dp,
                             start = 0.dp,
                             end = 0.dp
@@ -83,7 +83,7 @@ fun SignupContent(viewModel: SignupViewModel = hiltViewModel()) {
                     color = Color.Gray
                 )
                 DefaultTextField(
-                    modifier = Modifier.padding(top = 25.dp),
+                    modifier = Modifier.padding(top = 15.dp),
                     value = viewModel.username.value,
                     onValueChange = { viewModel.username.value = it },
                     label = "Nombre de usuario",
@@ -125,7 +125,7 @@ fun SignupContent(viewModel: SignupViewModel = hiltViewModel()) {
                 DefaultButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 15.dp),
+                        .padding(vertical = 10.dp),
                     text = "REGISTRARSE",
                     onClick = {  },
                     enabled = viewModel.isEnabledSignupButton

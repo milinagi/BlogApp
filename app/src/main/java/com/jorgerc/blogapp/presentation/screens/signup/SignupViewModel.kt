@@ -29,23 +29,13 @@ class SignupViewModel @Inject constructor(): ViewModel() {
     var isEnabledSignupButton = false
 
     // CONFIRMAR CONTRASENA
+    @set:JvmName("setConfirmPasswordString")
     var confirmPassword: MutableState<String> = mutableStateOf("")
+    @set:JvmName("setIsConfirmPasswordString")
     var isConfirmPassword: MutableState<Boolean> = mutableStateOf(false)
     var confirmPasswordErrMsg: MutableState<String> = mutableStateOf("")
 
 
-
-    fun validateConfirmPassword() {
-        if (password.value == confirmPassword.value) {
-            isConfirmPassword.value = true
-            confirmPasswordErrMsg.value = ""
-        }
-        else {
-            isConfirmPassword.value = false
-            confirmPasswordErrMsg.value = "Las contraseña no coinciden"
-        }
-        enabledSignupButton()
-    }
     fun validateUsername() {
         if (username.value.length >= 5) {
             isUsernameValid.value = true
@@ -57,13 +47,7 @@ class SignupViewModel @Inject constructor(): ViewModel() {
         }
         enabledSignupButton()
     }
-    fun enabledSignupButton() {
-        isEnabledSignupButton =
-                isEmailValid.value &&
-                isPasswordValid.value &&
-                isUsernameValid.value &&
-                isConfirmPassword.value
-    }
+
     fun validateEmail() {
         if (Patterns.EMAIL_ADDRESS.matcher(email.value).matches()) {
             isEmailValid.value = true
@@ -86,5 +70,25 @@ class SignupViewModel @Inject constructor(): ViewModel() {
             passwordErrMsg.value = "Al menos 6 caracteres"
         }
         enabledSignupButton()
+    }
+
+    fun validateConfirmPassword() {
+        if (password.value == confirmPassword.value) {
+            isConfirmPassword.value = true
+            confirmPasswordErrMsg.value = ""
+        }
+        else {
+            isConfirmPassword.value = false
+            confirmPasswordErrMsg.value = "Las contraseña no coinciden"
+        }
+        enabledSignupButton()
+    }
+
+    fun enabledSignupButton() {
+                    isEnabledSignupButton =
+                    isEmailValid.value &&
+                    isPasswordValid.value &&
+                    isUsernameValid.value &&
+                    isConfirmPassword.value
     }
 }
