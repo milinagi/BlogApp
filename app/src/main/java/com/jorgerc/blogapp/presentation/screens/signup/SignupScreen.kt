@@ -31,7 +31,7 @@ fun SignupScreen(navController: NavHostController) {
             Column(
                 modifier = Modifier.padding(it)
             ) {
-                SignupContent()
+                SignupContent(navController)
             }
         },
         bottomBar = {}

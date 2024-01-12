@@ -13,6 +13,7 @@ val Pink40 = Color(0xFF7D5260)
 val Red200 = Color(0xFFff7961)
 val Red500 = Color(0xFFff44336)
 val Red700 = Color(0xFFba000d)
+val default = Color(0xFFff7961)
 
 val Darkgray500 = Color(0xFF272727)
 val Darkgray700 = Color(0xFF202020)
