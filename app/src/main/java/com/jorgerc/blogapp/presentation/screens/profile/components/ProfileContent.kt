@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,7 +20,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,8 +28,6 @@ import com.jorgerc.blogapp.R
 import com.jorgerc.blogapp.presentation.components.DefaultButton
 import com.jorgerc.blogapp.presentation.navigation.AppScreen
 import com.jorgerc.blogapp.presentation.screens.profile.ProfileViewModule
-import com.jorgerc.blogapp.presentation.ui.theme.BlogAppTheme
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
 fun ProfileContent(navController: NavHostController, viewModel: ProfileViewModule = hiltViewModel()) {
@@ -76,13 +71,13 @@ fun ProfileContent(navController: NavHostController, viewModel: ProfileViewModul
         
         Spacer(modifier = Modifier.height(55.dp))
         Text(
-            text = "Nombre del usuario",
+            text = viewModel.userData.username,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             fontStyle = FontStyle.Italic
         )
         Text(
-            text = "Email del usuario",
+            text = viewModel.userData.email,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             fontStyle = FontStyle.Italic
