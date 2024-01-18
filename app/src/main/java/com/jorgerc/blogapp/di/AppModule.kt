@@ -17,6 +17,7 @@ import com.jorgerc.blogapp.domain.usecase.auth.Logout
 import com.jorgerc.blogapp.domain.usecase.auth.Signup
 import com.jorgerc.blogapp.domain.usecase.users.Create
 import com.jorgerc.blogapp.domain.usecase.users.GetUserById
+import com.jorgerc.blogapp.domain.usecase.users.Update
 import com.jorgerc.blogapp.domain.usecase.users.UsersUseCases
 import dagger.Module
 import dagger.Provides
@@ -53,6 +54,7 @@ object AppModule {
     @Provides
     fun provideUsersUseCases(repository: UsersRepository) = UsersUseCases(
         create = Create(repository),
-        getUserById = GetUserById(repository)
+        getUserById = GetUserById(repository),
+        update = Update(repository)
     )
 }

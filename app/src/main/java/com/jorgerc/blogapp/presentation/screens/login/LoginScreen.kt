@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.jorgerc.blogapp.presentation.screens.login.components.Login
 import com.jorgerc.blogapp.presentation.screens.login.components.LoginBottomBar
 import com.jorgerc.blogapp.presentation.screens.login.components.LoginContent
 import com.jorgerc.blogapp.presentation.ui.theme.BlogAppTheme
@@ -29,8 +30,9 @@ fun LoginScreen(navController: NavHostController) {
         bottomBar = {
             LoginBottomBar(navController)
         }
-
     )
+    //Maneja el estado de la peticion de login
+    Login(navController = navController)
 }
 
 @Preview(showSystemUi = true, showBackground = true)

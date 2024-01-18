@@ -41,7 +41,8 @@ import com.jorgerc.blogapp.presentation.ui.theme.Red500
 @Composable
 fun LoginContent(navController: NavHostController, viewModel: LoginViewModel = hiltViewModel()) {
 
-    val loginFlow = viewModel.loginFlow.collectAsState()
+    val state = viewModel.state
+
     Box(
         modifier = Modifier
             .padding()
@@ -102,24 +103,24 @@ fun LoginContent(navController: NavHostController, viewModel: LoginViewModel = h
                 )
                 DefaultTextField(
                     modifier = Modifier.padding(top = 25.dp),
-                    value = viewModel.email.value,
-                    onValueChange = { viewModel.email.value = it},
+                    value = state.email,
+                    onValueChange = { viewModel.onEmailInput(it) },
                     label = "Email",
                     icon = Icons.Default.Email,
                     keyboardType = KeyboardType.Email,
-                    errorMsg = viewModel.emailErrMsg.value,
+                    errorMsg = viewModel.emailErrMsg,
                     validateField = {
                         viewModel.validateEmail()
                     }
                 )
                 DefaultTextField(
                     modifier = Modifier.padding(top = 8.dp),
-                    value = viewModel.password.value,
-                    onValueChange = { viewModel.password.value = it},
+                    value = state.password,
+                    onValueChange = { viewModel.onPasswordInput(it) },
                     label = "Contraseña",
                     icon = Icons.Default.Lock,
                     hideText = true,
-                    errorMsg = viewModel.passwordErrMsg.value,
+                    errorMsg = viewModel.passwordErrMsg,
                     validateField = {
                         viewModel.validatePassword()
                     }
@@ -135,31 +136,6 @@ fun LoginContent(navController: NavHostController, viewModel: LoginViewModel = h
                     enabled = viewModel.isEnabledLoginButton
                 )
             }
-        }
-    }
-
-    loginFlow.value.let {
-        when(it) {
-            Response.Loading -> {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-            is Response.Success -> {
-                LaunchedEffect(Unit) {
-                    navController.navigate(route = AppScreen.Profile.route) {
-                        popUpTo(AppScreen.Login.route) { inclusive = true }
-                    }
-                }
-            }
-            is Response.Failure -> {
-                Toast.makeText(LocalContext.current, it.exception?.message?: "Error desconocido", Toast.LENGTH_LONG).show()
-            }
-            else -> {}
         }
     }
 }

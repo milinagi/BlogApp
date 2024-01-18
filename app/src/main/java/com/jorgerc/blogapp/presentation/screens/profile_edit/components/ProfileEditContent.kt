@@ -1,49 +1,69 @@
-package com.jorgerc.blogapp.presentation.screens.signup.components
+package com.jorgerc.blogapp.presentation.screens.profile_edit.components
 
-import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.jorgerc.blogapp.R
-import com.jorgerc.blogapp.domain.model.Response
 import com.jorgerc.blogapp.presentation.components.DefaultButton
 import com.jorgerc.blogapp.presentation.components.DefaultTextField
-import com.jorgerc.blogapp.presentation.navigation.AppScreen
-import com.jorgerc.blogapp.presentation.screens.signup.SignupViewModel
+import com.jorgerc.blogapp.presentation.screens.profile_edit.ProfileEditViewModel
 import com.jorgerc.blogapp.presentation.ui.theme.Red500
+import com.jorgerc.blogapp.presentation.utils.ComposeFileProvider
 
 @Composable
-fun SignupContent(navController: NavHostController, viewModel: SignupViewModel = hiltViewModel()) {
+fun ProfileEditContent(
+    navController: NavHostController,
+    viewModel: ProfileEditViewModel = hiltViewModel()
+) {
 
     val state = viewModel.state
+
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            uri?.let { viewModel.onGalleryResult(it) }
+        }
+    )
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture(),
+        onResult = { hasImage ->
+            viewModel.onCameraResult(hasImage)
+        }
+    )
+
+    val context = LocalContext.current
 
     Box(
         modifier = Modifier
             .fillMaxWidth(),
-        ) {
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -55,11 +75,28 @@ fun SignupContent(navController: NavHostController, viewModel: SignupViewModel =
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.height(30.dp))
-                Image(
-                    modifier = Modifier.height(120.dp),
-                    painter = painterResource(id = R.drawable.user),
-                    contentDescription = "Imagen de usuario"
-                )
+                if (viewModel.hasImage && viewModel.imageUri != null) {
+                    AsyncImage(
+                        modifier = Modifier
+                            .height(100.dp)
+                            .clip(CircleShape),
+                        model = viewModel.imageUri,
+                        contentDescription = "Selected image"
+                    )
+                } else {
+                    Image(
+                        modifier = Modifier
+                            .height(120.dp)
+                            .clickable {
+                                       val uri = ComposeFileProvider.getImageUri(context)
+                                viewModel.imageUri = uri
+                                cameraLauncher.launch(uri)
+//                                imagePicker.launch("image/*")
+                            },
+                        painter = painterResource(id = R.drawable.user),
+                        contentDescription = "Imagen de usuario"
+                    )
+                }
             }
 
         }
@@ -82,7 +119,7 @@ fun SignupContent(navController: NavHostController, viewModel: SignupViewModel =
                             start = 0.dp,
                             end = 0.dp
                         ),
-                    text = "REGISTRO",
+                    text = "EDITAR",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -101,48 +138,13 @@ fun SignupContent(navController: NavHostController, viewModel: SignupViewModel =
                     errorMsg = viewModel.usernameErrMsg,
                     validateField = { viewModel.validateUsername() }
                 )
-                DefaultTextField(
-                    modifier = Modifier.padding(top = 5.dp),
-                    value = state.email,
-                    onValueChange = { viewModel.onEmailInput(it) },
-                    label = "Correo electronico",
-                    icon = Icons.Default.Email,
-                    keyboardType = KeyboardType.Email,
-                    errorMsg = viewModel.emailErrMsg,
-                    validateField = { viewModel.validateEmail() }
-                )
-                DefaultTextField(
-                    modifier = Modifier.padding(top = 5.dp),
-                    value = state.password,
-                    onValueChange = { viewModel.onPasswordInput(it) },
-                    label = "Contraseña",
-                    icon = Icons.Default.Lock,
-                    hideText = true,
-                    errorMsg = viewModel.passwordErrMsg,
-                    validateField = { viewModel.validatePassword() }
-                )
-                DefaultTextField(
-                    modifier = Modifier.padding(top = 5.dp),
-                    value = state.confirmPassword,
-                    onValueChange = { viewModel.onConfirmPasswordInput(it) },
-                    label = "Confirmar Contraseña",
-                    icon = Icons.Outlined.Lock,
-                    hideText = true,
-                    errorMsg = viewModel.confirmPasswordErrMsg,
-                    validateField = { viewModel.validateConfirmPassword() }
-                )
-
                 DefaultButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 10.dp),
-                    text = "REGISTRARSE",
-                    onClick = {
-                              viewModel.onSignup()
-                    },
-                    enabled = viewModel.isEnabledSignupButton
+                        .padding(top = 20.dp, bottom = 40.dp),
+                    text = "ACTUALIZAR DATOS",
+                    onClick = { viewModel.onUpdate() },
                 )
-
             }
 
         }

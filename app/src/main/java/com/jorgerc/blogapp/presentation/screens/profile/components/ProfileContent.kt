@@ -89,7 +89,11 @@ fun ProfileContent(navController: NavHostController, viewModel: ProfileViewModul
             text = "Editar datos",
             color = Color.White,
             icon = Icons.Default.Edit,
-            onClick = {  }
+            onClick = {
+                navController.navigate(
+                    route = AppScreen.ProfileEdit.passUser(viewModel.userData.toJson())
+                )
+            }
         )
         DefaultButton(
             modifier = Modifier
