@@ -1,6 +1,6 @@
 package com.jorgerc.blogapp.presentation.screens.profile_edit
 
-import android.net.Uri
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,49 +10,77 @@ import androidx.lifecycle.viewModelScope
 import com.jorgerc.blogapp.domain.model.Response
 import com.jorgerc.blogapp.domain.model.User
 import com.jorgerc.blogapp.domain.usecase.users.UsersUseCases
+import com.jorgerc.blogapp.presentation.utils.ComposeFileProvider
+import com.jorgerc.blogapp.presentation.utils.ResultingActivityHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileEditViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val usersUseCases: UsersUseCases
+    private val usersUseCases: UsersUseCases,
+    @ApplicationContext private val context: Context
 ): ViewModel() {
 
-    //STATE FORM
+    // STATE FORM
     var state by mutableStateOf(ProfileEditState())
         private set
     var usernameErrMsg by mutableStateOf("")
         private set
 
+    // ARGUMENTS
     val data = savedStateHandle.get<String>("user")
     val user = User.fromJson(data!!)
 
+    // RESPONSE
     var updateResponse by mutableStateOf<Response<Boolean>?>(null)
         private set
+    var saveImageResponse by mutableStateOf<Response<String>?>(null)
+        private set
 
-    // IMAGE
-    var imageUri by mutableStateOf<Uri?>(null)
-    var hasImage by mutableStateOf(false)
+    // FILE
+    var file: File? = null
+
+    val resultingActivityHaldler = ResultingActivityHandler()
 
     init {
-        state = state.copy(username = user.username)
+        state = state.copy(
+            username = user.username,
+            image = user.image
+        )
     }
 
-    fun onCameraResult(result: Boolean) {
-        hasImage = result
-    }
-    fun onGalleryResult(uri: Uri?) {
-        hasImage = uri != null
-        imageUri = uri
+    fun saveImage() = viewModelScope.launch {
+        if (file != null) {
+            saveImageResponse = Response.Loading
+            val result = usersUseCases.saveImage(file!!)
+            saveImageResponse = result
+        }
     }
 
-    fun onUpdate() {
+    fun pickImage() = viewModelScope.launch {
+        val result = resultingActivityHaldler.getContent("image/*")
+        if (result != null) {
+            file = ComposeFileProvider.createFileFromUri(context, result)
+            state = state.copy(image = result.toString())
+        }
+    }
+    fun takePhoto() = viewModelScope.launch {
+        val result = resultingActivityHaldler.takePicturePreview()
+        if (result != null) {
+            state = state.copy(image = ComposeFileProvider.getPathFromBitmap(context, result))
+            file = File(state.image)
+        }
+    }
+
+    fun onUpdate(url: String) {
         val myUser = User(
             id = user.id,
             username = state.username,
-            image = ""
+            image = url
         )
         update(myUser)
     }

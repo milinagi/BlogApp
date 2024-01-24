@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -73,15 +71,16 @@ dependencies {
 
     // Firebase
     implementation("com.google.firebase:firebase-auth:22.3.0")
-    // FireStore
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-storage")
 
     // GSON
     implementation ("com.google.code.gson:gson:2.10")
 
     // ASYNC IMAGE
     implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation("commons-io:commons-io:2.7")
 
 
     testImplementation("junit:junit:4.13.2")

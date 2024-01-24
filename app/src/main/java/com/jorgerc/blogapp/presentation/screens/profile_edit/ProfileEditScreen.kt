@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.jorgerc.blogapp.presentation.components.DefaultTopBar
 import com.jorgerc.blogapp.presentation.screens.profile_edit.components.ProfileEditContent
+import com.jorgerc.blogapp.presentation.screens.profile_edit.components.SaveImage
 import com.jorgerc.blogapp.presentation.screens.profile_edit.components.Update
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,5 +38,6 @@ fun ProfileEditScreen(
         },
         bottomBar = {}
     )
+    SaveImage()
     Update()
 }
