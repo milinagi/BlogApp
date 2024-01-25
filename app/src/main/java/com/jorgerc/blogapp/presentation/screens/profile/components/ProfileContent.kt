@@ -1,5 +1,7 @@
 package com.jorgerc.blogapp.presentation.screens.profile.components
 
+import android.app.Activity
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -28,12 +31,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.jorgerc.blogapp.R
+import com.jorgerc.blogapp.presentation.MainActivity
 import com.jorgerc.blogapp.presentation.components.DefaultButton
-import com.jorgerc.blogapp.presentation.navigation.AppScreen
+import com.jorgerc.blogapp.presentation.navigation.DetailsScreen
 import com.jorgerc.blogapp.presentation.screens.profile.ProfileViewModule
 
 @Composable
 fun ProfileContent(navController: NavHostController, viewModel: ProfileViewModule = hiltViewModel()) {
+
+    val activity = LocalContext.current as? Activity
 
     Column(
         modifier = Modifier
@@ -107,7 +113,7 @@ fun ProfileContent(navController: NavHostController, viewModel: ProfileViewModul
             icon = Icons.Default.Edit,
             onClick = {
                 navController.navigate(
-                    route = AppScreen.ProfileEdit.passUser(viewModel.userData.toJson())
+                    route = DetailsScreen.ProfileUpdate.passUser(viewModel.userData.toJson())
                 )
             }
         )
@@ -117,9 +123,8 @@ fun ProfileContent(navController: NavHostController, viewModel: ProfileViewModul
             text = "Cerrar sesion",
             onClick = {
                 viewModel.logout()
-                navController.navigate(route = AppScreen.Login.route) {
-                    popUpTo(AppScreen.Profile.route) { inclusive = true }
-                }
+                activity?.finish()
+                activity?.startActivity(Intent(activity, MainActivity::class.java))
             }
         )
     }

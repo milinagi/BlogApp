@@ -9,8 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.jorgerc.blogapp.presentation.navigation.AppNavigation
-import com.jorgerc.blogapp.presentation.screens.login.LoginScreen
+import com.jorgerc.blogapp.presentation.navigation.RootNavGraph
 import com.jorgerc.blogapp.presentation.ui.theme.BlogAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     navController = rememberNavController()
-                    AppNavigation(navController = navController)
+                    RootNavGraph(navController = navController)
                 }
             }
         }

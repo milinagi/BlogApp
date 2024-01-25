@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.jorgerc.blogapp"
-        minSdk = 23
+        minSdk = 25
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -66,6 +66,7 @@ dependencies {
     // DAGGER-HILT
     implementation("com.google.dagger:hilt-android:2.48")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
+    implementation("androidx.wear.compose:compose-material3:1.0.0-alpha15")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 

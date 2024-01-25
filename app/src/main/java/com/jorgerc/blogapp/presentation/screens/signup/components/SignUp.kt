@@ -8,7 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.jorgerc.blogapp.domain.model.Response
 import com.jorgerc.blogapp.presentation.components.ProgressBar
-import com.jorgerc.blogapp.presentation.navigation.AppScreen
+import com.jorgerc.blogapp.presentation.navigation.Graph
 import com.jorgerc.blogapp.presentation.screens.signup.SignupViewModel
 
 @Composable
@@ -20,8 +20,8 @@ fun SignUp(navController: NavHostController, viewModel: SignupViewModel = hiltVi
         is Response.Success -> {
             LaunchedEffect(Unit) {
                 viewModel.createUser()
-                navController.popBackStack(AppScreen.Login.route, true)
-                navController.navigate(route = AppScreen.Profile.route)
+                navController.popBackStack(Graph.AUTHENTICATION, true)
+                navController.navigate(route = Graph.HOME)
             }
         }
         is Response.Failure -> {

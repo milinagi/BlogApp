@@ -8,7 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.jorgerc.blogapp.domain.model.Response
 import com.jorgerc.blogapp.presentation.components.ProgressBar
-import com.jorgerc.blogapp.presentation.navigation.AppScreen
+import com.jorgerc.blogapp.presentation.navigation.Graph
 import com.jorgerc.blogapp.presentation.screens.login.LoginViewModel
 
 @Composable
@@ -20,8 +20,8 @@ fun Login(navController: NavHostController, viewModel: LoginViewModel = hiltView
         }
         is Response.Success -> {
             LaunchedEffect(Unit) {
-                navController.navigate(route = AppScreen.Profile.route) {
-                    popUpTo(AppScreen.Login.route) { inclusive = true }
+                navController.navigate(route = Graph.HOME) {
+                    popUpTo(Graph.AUTHENTICATION) { inclusive = true }
                 }
             }
         }
