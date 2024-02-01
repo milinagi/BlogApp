@@ -3,6 +3,7 @@ package com.jorgerc.blogapp.data.repository
 import android.net.Uri
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.storage.StorageReference
+import com.jorgerc.blogapp.core.Constants.USERS
 import com.jorgerc.blogapp.domain.model.Response
 import com.jorgerc.blogapp.domain.model.User
 import com.jorgerc.blogapp.domain.repository.UsersRepository
@@ -12,10 +13,11 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import java.io.File
 import javax.inject.Inject
+import javax.inject.Named
 
 class UsersRepositoryImpl @Inject constructor(
-    private val usersRef: CollectionReference,
-    private val storageUsersRef: StorageReference
+    @Named(USERS) private val usersRef: CollectionReference,
+    @Named(USERS) private val storageUsersRef: StorageReference
 ): UsersRepository {
 
     override suspend fun create(user: User): Response<Boolean> {
@@ -57,7 +59,7 @@ class UsersRepositoryImpl @Inject constructor(
     }
 
     override fun getUserById(id: String): Flow<User> = callbackFlow {
-        val snapshotListener = usersRef.document(id).addSnapshotListener { snapshot, e ->
+        val snapshotListener = usersRef.document(id).addSnapshotListener { snapshot, _ ->
             val user = snapshot?.toObject(User::class.java) ?: User()
             trySend(user)
         }

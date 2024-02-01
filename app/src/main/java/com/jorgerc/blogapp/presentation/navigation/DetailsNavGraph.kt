@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.jorgerc.blogapp.presentation.screens.new_post.NewPostScreen
 import com.jorgerc.blogapp.presentation.screens.profile_edit.ProfileEditScreen
 
 fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
@@ -14,6 +15,12 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
         route = Graph.DETAILS,
         startDestination = DetailsScreen.ProfileUpdate.route
     ) {
+
+        composable(
+            route = DetailsScreen.NewPost.route
+        ) {
+            NewPostScreen(navController = navController)
+        }
 
         composable(
             route = DetailsScreen.ProfileUpdate.route,
@@ -30,6 +37,7 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
 
 sealed class DetailsScreen(val route: String) {
 
+    object NewPost: DetailsScreen("posts/new")
     object ProfileUpdate: DetailsScreen("profile/edit/{user}") {
         fun passUser(user: String) = "profile/edit/$user"
     }

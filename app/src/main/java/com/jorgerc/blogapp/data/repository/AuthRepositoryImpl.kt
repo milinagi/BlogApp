@@ -14,13 +14,14 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
 
     override suspend fun login(email: String, password: String): Response<FirebaseUser> {
 
-        return  try {
+        return try {
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
             Response.Success(result.user!!)
         } catch (e: Exception) {
             e.printStackTrace()
             Response.Failure(e)
         }
+
     }
 
     override suspend fun signUp(user: User): Response<FirebaseUser> {
@@ -32,6 +33,7 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             e.printStackTrace()
             Response.Failure(e)
         }
+
     }
 
     override fun logout() {

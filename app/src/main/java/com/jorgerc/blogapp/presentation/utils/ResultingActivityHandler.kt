@@ -48,7 +48,7 @@ class ResultingActivityHandler {
         contract: ActivityResultContract<I, O>,
         maxTry: Int = 10,
         millis: Long = 200,
-        launcher: (ManagedActivityResultLauncher<I, O>)->Unit
+        launcher: (ManagedActivityResultLauncher<I,O>)->Unit
     ): O? =  suspendCancellableCoroutine {coroutine->
         _callback.value = {
             val a = rememberLauncherForActivityResult(

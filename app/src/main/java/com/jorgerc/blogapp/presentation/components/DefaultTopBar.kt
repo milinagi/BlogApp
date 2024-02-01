@@ -2,7 +2,7 @@ package com.jorgerc.blogapp.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -19,9 +19,8 @@ import androidx.navigation.NavHostController
 fun DefaultTopBar(
     title: String,
     upAvailable: Boolean = false,
-    navController: NavHostController? = null
+    navController: NavHostController? = null,
 ) {
-
     TopAppBar(
         modifier = Modifier
             .background(color = Color.Red),
@@ -34,7 +33,7 @@ fun DefaultTopBar(
         navigationIcon = {
             if (upAvailable) {
                 IconButton(onClick = { navController?.popBackStack() }) {
-                    Icon(imageVector = Icons.Default.ArrowBack,
+                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "",
                         tint = Color.White
                     )

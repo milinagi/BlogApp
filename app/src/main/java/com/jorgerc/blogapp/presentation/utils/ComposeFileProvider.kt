@@ -26,12 +26,12 @@ class ComposeFileProvider: FileProvider(R.xml.file_paths) {
                 )
                 FileUtils.copyInputStreamToFile(stream, file)
                 return file
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
                 return null
             }
         }
+
         fun getImageUri(context: Context): Uri {
 
             val directory = File(context.cacheDir, "images")
@@ -61,4 +61,5 @@ class ComposeFileProvider: FileProvider(R.xml.file_paths) {
         }
 
     }
+
 }
