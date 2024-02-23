@@ -45,6 +45,7 @@ fun NewPostContent() {
         CategoryRadioButton("MOBILE", R.drawable.icon_pc),
     )
 
+
     Column(modifier = Modifier
         .verticalScroll(rememberScrollState())
         .fillMaxWidth(),
